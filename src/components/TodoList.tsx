@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "./shadcn-ui/Table";
 import { LoaderCircleIcon } from "lucide-react";
+import { getDoneLabel, getDueDateLabel } from "../helpers/todoLabels";
 
 export function TodoList() {
   const { isPending, data } = useQuery<Todo[]>({
@@ -20,13 +21,6 @@ export function TodoList() {
   if (isPending || !data) {
     return <LoaderCircleIcon className="animate-spin" />;
   }
-
-  const getDoneLabel = (done: boolean) => {
-    if (done) {
-      return "Erledigt";
-    }
-    return "Offen";
-  };
 
   return (
     <div>
@@ -44,7 +38,7 @@ export function TodoList() {
             <TableRow key={todo.id}>
               <TableCell>{todo.label}</TableCell>
               <TableCell>{todo.responsible}</TableCell>
-              <TableCell>{todo.dueDate}</TableCell>
+              <TableCell>{getDueDateLabel(todo.dueDate)}</TableCell>
               <TableCell>{getDoneLabel(todo.done)}</TableCell>
             </TableRow>
           ))}

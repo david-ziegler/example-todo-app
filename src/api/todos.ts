@@ -1,4 +1,4 @@
-import env from "../util/env";
+import env from "../helpers/env";
 
 export async function getTodos() {
   const res = await fetch(`${env.VITE_TODO_API_URL}/todos`);
