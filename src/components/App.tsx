@@ -1,5 +1,9 @@
-function App() {
-  return <div></div>;
-}
+import TodoList from "./TodoList";
 
-export default App;
+export function App() {
+  return (
+    <div>
+      <TodoList />
+    </div>
+  );
+}
