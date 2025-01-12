@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTodos } from "../api/todos";
-import { Todo } from "../types/todo";
+import { fetchTodosWithResponsibles as fetchTodosWithResponsibles } from "../api/todos";
+import { TodoWithResponsible } from "../types/todoWithResponsible";
 import {
   Table,
   TableBody,
@@ -13,9 +13,9 @@ import { LoaderCircleIcon } from "lucide-react";
 import { getDoneLabel, getDueDateLabel } from "../helpers/todoLabels";
 
 export function TodoList() {
-  const { isPending, data } = useQuery<Todo[]>({
+  const { isPending, data } = useQuery<TodoWithResponsible[]>({
     queryKey: ["todos"],
-    queryFn: getTodos,
+    queryFn: fetchTodosWithResponsibles,
   });
 
   if (isPending || !data) {
@@ -37,7 +37,7 @@ export function TodoList() {
           {data.map((todo) => (
             <TableRow key={todo.id}>
               <TableCell>{todo.label}</TableCell>
-              <TableCell>{todo.responsible}</TableCell>
+              <TableCell>{todo.responsiblePerson.name}</TableCell>
               <TableCell>{getDueDateLabel(todo.dueDate)}</TableCell>
               <TableCell>{getDoneLabel(todo.done)}</TableCell>
             </TableRow>
