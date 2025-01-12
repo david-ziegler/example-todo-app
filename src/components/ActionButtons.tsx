@@ -5,8 +5,6 @@ import { CreateTodoDialog } from "./CreateTodoDialog";
 export function ActionButtons() {
   const [isCreateTodoDialogOpen, setIsCreateTodoDialogOpen] = useState(false);
 
-  const handleSaveTodo = () => {};
-
   return (
     <div>
       <Button onClick={() => setIsCreateTodoDialogOpen(true)}>
@@ -15,8 +13,7 @@ export function ActionButtons() {
       {isCreateTodoDialogOpen && (
         <CreateTodoDialog
           open={isCreateTodoDialogOpen}
-          onCancelClick={() => setIsCreateTodoDialogOpen(false)}
-          onSaveClick={handleSaveTodo}
+          closeDialog={() => setIsCreateTodoDialogOpen(false)}
         />
       )}
     </div>

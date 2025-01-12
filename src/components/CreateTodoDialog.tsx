@@ -1,44 +1,35 @@
-import { z } from "zod";
 import { Dialog } from "./shadcn-ui/Dialog";
 import { useForm } from "react-hook-form";
 import { createTodoSchema, TodoCreate } from "../types/todo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./shadcn-ui/Button";
 import { Input } from "./shadcn-ui/Input";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTodo } from "../api/todos";
-import { Select } from "@radix-ui/react-select";
 import { FormField } from "./form/FormField";
-import { ResponsibleSelect } from "./form/ResponsibleSelect";
-import { TodoWithResponsible } from "../types/todoWithResponsible";
+import { SelectResponsible } from "./form/SelectResponsible";
 import { fetchPersons } from "../api/persons";
 import { Person } from "../types/person";
+import { SelectDone } from "./form/SelectDone";
 
 type Props = {
   open: boolean;
-  onCancelClick: () => void;
-  onSaveClick: () => void;
+  closeDialog: () => void;
 };
 
-export function CreateTodoDialog({
-  open,
-  onCancelClick,
-  onSaveClick,
-}: Props): JSX.Element {
-  const {
-    data: persons,
-    isPending,
-    isError,
-    error,
-  } = useQuery<Person[]>({
+export function CreateTodoDialog({ open, closeDialog }: Props): JSX.Element {
+  const { data: persons } = useQuery<Person[]>({
     queryKey: ["persons"],
     queryFn: fetchPersons,
   });
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: createTodo,
     onSuccess: () => {
-      onSaveClick();
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      closeDialog();
     },
     onError: (error) => {
       console.error("Error creating todo:", error);
@@ -57,12 +48,12 @@ export function CreateTodoDialog({
 
   const onSubmit = (data: TodoCreate): void => {
     console.log("data", data);
-    // mutation.mutate(data);
+    mutation.mutate(data);
   };
 
   const handleCancelClick = () => {
     reset();
-    onCancelClick();
+    closeDialog();
   };
 
   return (
@@ -73,16 +64,18 @@ export function CreateTodoDialog({
             <Input id="label" {...register("label")} />
           </FormField>
           <FormField name="responsible" label="Verantwortlich" errors={errors}>
-            <ResponsibleSelect persons={persons} control={control} />
+            <SelectResponsible persons={persons} control={control} />
+          </FormField>
+          <FormField name="done" label="Status" errors={errors}>
+            <SelectDone control={control} />
           </FormField>
         </div>
         <div className="flex flex-row justify-end space-x-2 pt-6">
           <Button variant="outline" onClick={handleCancelClick}>
             Abbrechen
           </Button>
-          <Button type="submit">
-            {mutation.isPending ? "laden..." : "Speichern"}
-            {/* TODO: loading */}
+          <Button type="submit" disabled={mutation.isPending}>
+            Speichern
           </Button>
         </div>
       </form>
