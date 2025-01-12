@@ -9,34 +9,20 @@ import { Button } from "./Button";
 type Props = {
   open: boolean;
   title: string;
-  onCancelClick: () => void;
-  onSaveClick: () => void;
 };
 
-export function Dialog({
-  open,
-  title,
-  children,
-  onCancelClick,
-  onSaveClick,
-}: PropsWithChildren<Props>) {
+export function Dialog({ open, title, children }: PropsWithChildren<Props>) {
   if (!open) {
     return null;
   }
 
   return (
     <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <Card className="w-[350px]">
+      <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent>{children}</CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={onCancelClick}>
-            Abbrechen
-          </Button>
-          <Button onClick={onSaveClick}>Speichern</Button>
-        </CardFooter>
       </Card>
     </div>
   );

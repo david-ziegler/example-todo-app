@@ -1,25 +1,25 @@
 import env from "../helpers/env";
 import { Person } from "../types/person";
-import { Todo } from "../types/todo";
+import { Todo, TodoCreate } from "../types/todo";
 import {
   isTodoWithResponsible,
   TodoWithResponsible,
 } from "../types/todoWithResponsible";
 
 async function fetchTodos(): Promise<Todo[]> {
-  const todosResult = await fetch(`${env.VITE_TODO_API_URL}/todos`);
-  if (!todosResult.ok) {
+  const todosResponse = await fetch(`${env.VITE_TODO_API_URL}/todos`);
+  if (!todosResponse.ok) {
     throw new Error("Error while trying to fetch todos");
   }
-  return todosResult.json();
+  return todosResponse.json();
 }
 
 async function fetchPersons(): Promise<Person[]> {
-  const personsResult = await fetch(`${env.VITE_TODO_API_URL}/persons`);
-  if (!personsResult.ok) {
+  const personsResponse = await fetch(`${env.VITE_TODO_API_URL}/persons`);
+  if (!personsResponse.ok) {
     throw new Error("Error while trying to fetch persons");
   }
-  return personsResult.json();
+  return personsResponse.json();
 }
 
 export async function fetchTodosWithResponsibles() {
@@ -46,4 +46,23 @@ export async function fetchTodosWithResponsibles() {
   );
 
   return todosWithResponsibles;
+}
+
+export async function createTodo(data: TodoCreate): Promise<TodoCreate> {
+  const response = await fetch(`${env.VITE_TODO_API_URL}/todos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    throw new Error(
+      errorDetails.message || "Error while trying to create a todo"
+    );
+  }
+
+  return await response.json();
 }
