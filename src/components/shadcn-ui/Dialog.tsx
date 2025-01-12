@@ -1,7 +1,5 @@
 import { PropsWithChildren } from "react";
-import { cn } from "./utils";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./Card";
-import { Button } from "./Button";
+import { Card, CardContent, CardHeader, CardTitle } from "./Card";
 
 // This component is not from shadcn/ui but self-written in order to avoid dependencies,
 // still this seemed the best folder to put it

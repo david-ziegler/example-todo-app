@@ -5,6 +5,7 @@ import {
   isTodoWithResponsible,
   TodoWithResponsible,
 } from "../types/todoWithResponsible";
+import { fetchPersons } from "./persons";
 
 async function fetchTodos(): Promise<Todo[]> {
   const todosResponse = await fetch(`${env.VITE_TODO_API_URL}/todos`);
@@ -12,14 +13,6 @@ async function fetchTodos(): Promise<Todo[]> {
     throw new Error("Error while trying to fetch todos");
   }
   return todosResponse.json();
-}
-
-async function fetchPersons(): Promise<Person[]> {
-  const personsResponse = await fetch(`${env.VITE_TODO_API_URL}/persons`);
-  if (!personsResponse.ok) {
-    throw new Error("Error while trying to fetch persons");
-  }
-  return personsResponse.json();
 }
 
 export async function fetchTodosWithResponsibles() {
@@ -34,7 +27,6 @@ export async function fetchTodosWithResponsibles() {
       const todoWithResponsible = {
         ...todo,
         responsiblePerson: personsMap.get(todo.responsible),
-        responsible: undefined,
       };
 
       if (!isTodoWithResponsible(todoWithResponsible)) {

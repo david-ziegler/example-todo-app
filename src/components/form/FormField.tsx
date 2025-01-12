@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { FieldErrors } from "react-hook-form";
-import { TodoCreate } from "../types/todo";
+import { TodoCreate } from "../../types/todo";
 
 type Props = {
   name: keyof TodoCreate;
@@ -15,7 +15,7 @@ export function FormField({
   children,
 }: PropsWithChildren<Props>) {
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <label htmlFor={name} className="text-sm font-medium">
         {label}
       </label>

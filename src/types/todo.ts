@@ -9,7 +9,10 @@ export type Todo = {
 };
 
 export const createTodoSchema = z.object({
-  label: z.string().min(1, "Bitte gib eine Beschreibung ein."),
+  label: z.string().min(1, "Bitte gib eine Beschreibung ein"),
+  responsible: z.number({
+    required_error: "Bitte wähle eine verantwortliche Person aus",
+  }),
 });
 
 export type TodoCreate = z.infer<typeof createTodoSchema>;

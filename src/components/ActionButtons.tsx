@@ -12,11 +12,13 @@ export function ActionButtons() {
       <Button onClick={() => setIsCreateTodoDialogOpen(true)}>
         Aufgabe hinzufügen
       </Button>
-      <CreateTodoDialog
-        open={isCreateTodoDialogOpen}
-        onCancelClick={() => setIsCreateTodoDialogOpen(false)}
-        onSaveClick={handleSaveTodo}
-      ></CreateTodoDialog>
+      {isCreateTodoDialogOpen && (
+        <CreateTodoDialog
+          open={isCreateTodoDialogOpen}
+          onCancelClick={() => setIsCreateTodoDialogOpen(false)}
+          onSaveClick={handleSaveTodo}
+        />
+      )}
     </div>
   );
 }
