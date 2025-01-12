@@ -27,7 +27,7 @@ export function TodoList() {
     return (
       <ErrorAlert
         error={error}
-        message="An error occurred while trying to fetch todos"
+        message="Beim Laden der Aufgaben ist ein Fehler aufgetreten."
       />
     );
   }
