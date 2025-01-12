@@ -20,7 +20,7 @@ type Props<FormData extends FieldValues> = {
   transformValue: (value: string) => string | number | boolean;
 };
 
-export function Select<FormData extends FieldValues>({
+export function FormSelect<FormData extends FieldValues>({
   name,
   options,
   control,

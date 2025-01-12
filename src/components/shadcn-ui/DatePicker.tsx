@@ -5,32 +5,35 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { cn } from "./utils";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+type Props = {
+  value: Date | undefined;
+  setValue: (value: Date | undefined) => void;
+};
 
+export function DatePicker({ value, setValue }: Props) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            "justify-start text-left font-normal",
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {date ? <span>{format(date, "PPP")}</span> : null}
+          {value ? <span>{format(value, "PPP")}</span> : null}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          selected={value}
+          onSelect={setValue}
           initialFocus
         />
       </PopoverContent>

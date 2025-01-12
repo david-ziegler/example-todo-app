@@ -11,6 +11,8 @@ import { SelectResponsible } from "./form/SelectResponsible";
 import { fetchPersons } from "../api/persons";
 import { Person } from "../types/person";
 import { SelectDone } from "./form/SelectDone";
+import { DatePicker } from "./shadcn-ui/DatePicker";
+import { FormDatePicker } from "./form/FormDatePicker";
 
 type Props = {
   open: boolean;
@@ -65,6 +67,9 @@ export function CreateTodoDialog({ open, closeDialog }: Props): JSX.Element {
           </FormField>
           <FormField name="responsible" label="Verantwortlich" errors={errors}>
             <SelectResponsible persons={persons} control={control} />
+          </FormField>
+          <FormField name="dueDate" label="Fälligkeit" errors={errors}>
+            <FormDatePicker name="dueDate" control={control} />
           </FormField>
           <FormField name="done" label="Status" errors={errors}>
             <SelectDone control={control} />

@@ -2,7 +2,7 @@ import { Control, Controller } from "react-hook-form";
 import { Person } from "../../types/person";
 import { TodoCreate } from "../../types/todo";
 import { LoaderCircleIcon } from "lucide-react";
-import { Select } from "./Select";
+import { FormSelect } from "./FormSelect";
 
 type Props = {
   persons: Person[] | undefined;
@@ -11,7 +11,7 @@ type Props = {
 
 export function SelectResponsible({ persons, control }: Props) {
   return (
-    <Select
+    <FormSelect
       name="responsible"
       options={persons?.map((person) => ({
         value: person.id.toString(),

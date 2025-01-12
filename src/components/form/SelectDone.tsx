@@ -2,7 +2,7 @@ import { Control, Controller } from "react-hook-form";
 import { Person } from "../../types/person";
 import { TodoCreate } from "../../types/todo";
 import { LoaderCircleIcon } from "lucide-react";
-import { Select } from "./Select";
+import { FormSelect } from "./FormSelect";
 
 type Props = {
   control: Control<TodoCreate, any>;
@@ -21,7 +21,7 @@ const options = [
 
 export function SelectDone({ control }: Props) {
   return (
-    <Select
+    <FormSelect
       name="done"
       options={options}
       control={control}

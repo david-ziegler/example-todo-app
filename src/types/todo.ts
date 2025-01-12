@@ -14,6 +14,7 @@ export const createTodoSchema = z.object({
     required_error: "Bitte wähle eine verantwortliche Person aus",
   }),
   done: z.boolean({ required_error: "Bitte wähle einen Status aus" }),
+  dueDate: z.string({ required_error: "Bitte wähle ein Fälligkeitsdatum aus" }),
 });
 
 export type TodoCreate = z.infer<typeof createTodoSchema>;
