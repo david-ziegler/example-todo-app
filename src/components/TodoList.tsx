@@ -11,15 +11,25 @@ import {
 } from "./shadcn-ui/Table";
 import { LoaderCircleIcon } from "lucide-react";
 import { getDoneLabel, getDueDateLabel } from "../helpers/todoLabels";
+import { ErrorAlert } from "./ErrorAlert";
 
 export function TodoList() {
-  const { isPending, data } = useQuery<TodoWithResponsible[]>({
+  const { data, isPending, isError, error } = useQuery<TodoWithResponsible[]>({
     queryKey: ["todos"],
     queryFn: fetchTodosWithResponsibles,
   });
 
-  if (isPending || !data) {
+  if (isPending) {
     return <LoaderCircleIcon className="animate-spin" />;
+  }
+
+  if (isError || !data) {
+    return (
+      <ErrorAlert
+        error={error}
+        message="An error occurred while trying to fetch todos"
+      />
+    );
   }
 
   return (
