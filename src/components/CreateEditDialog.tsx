@@ -35,6 +35,7 @@ export function CreateEditDialog() {
     },
     onError: (error) => {
       console.error("Error creating todo:", error);
+      setErrorMessage("Es ist ein Fehler aufgetreten.");
     },
   });
 
@@ -46,6 +47,7 @@ export function CreateEditDialog() {
     },
     onError: (error) => {
       console.error("Error creating todo:", error);
+      setErrorMessage("Es ist ein Fehler aufgetreten.");
     },
   });
 
@@ -108,16 +110,15 @@ export function CreateEditDialog() {
           </FormField>
         </div>
         {errorMessage && (
-          <p className="text-destructive pt-6">{errorMessage}</p>
+          <p className="text-destructive text-sm font-medium pt-6">
+            {errorMessage}
+          </p>
         )}
         <div className="flex flex-row justify-end space-x-2 pt-6">
           <Button variant="outline" onClick={handleCancelClick}>
             Abbrechen
           </Button>
-          <Button
-            type="submit"
-            disabled={createMutation.isPending || errorMessage.length > 0}
-          >
+          <Button type="submit" disabled={createMutation.isPending}>
             Speichern
           </Button>
         </div>

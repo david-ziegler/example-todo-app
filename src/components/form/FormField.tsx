@@ -21,7 +21,9 @@ export function FormField({
       </label>
       {children}
       {errors[name] && (
-        <p className="text-destructive">{errors[name].message}</p>
+        <p className="text-destructive text-sm font-medium">
+          {errors[name].message}
+        </p>
       )}
     </div>
   );
