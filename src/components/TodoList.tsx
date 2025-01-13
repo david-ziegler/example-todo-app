@@ -14,20 +14,34 @@ import { getDoneLabel, getDueDateLabel } from "../helpers/todoLabels";
 import { ErrorAlert } from "./ErrorAlert";
 import { Link } from "./Link";
 import { useDialog } from "./context/useDialog";
+import { Checkbox } from "./shadcn-ui/Checkbox";
+import { useState } from "react";
 
 export function TodoList() {
   const { openEditDialog } = useDialog();
 
-  const { data, isPending, isError, error } = useQuery<TodoWithResponsible[]>({
+  const [selectedTodos, setSelectedTodos] = useState(new Set());
+
+  const {
+    data: todos,
+    isPending,
+    isError,
+    error,
+  } = useQuery<TodoWithResponsible[]>({
     queryKey: ["todos"],
     queryFn: fetchTodosWithResponsibles,
   });
 
   if (isPending) {
-    return <LoaderCircleIcon className="animate-spin" />;
+    return (
+      <LoaderCircleIcon
+        size={30}
+        className="animate-spin mx-auto mt-[150px] stroke-primary/70"
+      />
+    );
   }
 
-  if (isError || !data) {
+  if (isError || !todos) {
     return (
       <ErrorAlert
         error={error}
@@ -36,11 +50,47 @@ export function TodoList() {
     );
   }
 
+  const setIsSelected = (id: number, value: boolean | "indeterminate") => {
+    // Value will always be `true` | `false`, never "indeterminate" because we never set a checkbox to "indeterminate"
+    setSelectedTodos((prev) => {
+      const updated = new Set(prev);
+      if (value) {
+        updated.add(id);
+      } else {
+        updated.delete(id);
+      }
+      return updated;
+    });
+  };
+
+  const setAllIsSelected = (value: boolean | "indeterminate") => {
+    setSelectedTodos(() => {
+      const updated = new Set<number>();
+      for (const todo of todos) {
+        if (value) {
+          updated.add(todo.id);
+        } else {
+          updated.delete(todo.id);
+        }
+      }
+      return updated;
+    });
+  };
+
+  const isAllSelected = selectedTodos.size === todos?.length;
+
   return (
     <div>
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead role="checkbox">
+              <Checkbox
+                checked={isAllSelected}
+                onCheckedChange={(value) => setAllIsSelected(value)}
+                aria-label="Select all"
+              />
+            </TableHead>
             <TableHead>Beschreibung</TableHead>
             <TableHead>Verantwortlich</TableHead>
             <TableHead>Fälligkeit</TableHead>
@@ -48,8 +98,15 @@ export function TodoList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((todo) => (
+          {todos.map((todo) => (
             <TableRow key={todo.id}>
+              <TableCell role="checkbox">
+                <Checkbox
+                  checked={selectedTodos.has(todo.id)}
+                  onCheckedChange={(value) => setIsSelected(todo.id, value)}
+                  aria-label="Select row"
+                />
+              </TableCell>
               <TableCell>
                 <Link onClick={() => openEditDialog(todo.id)}>
                   {todo.label}

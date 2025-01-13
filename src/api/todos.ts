@@ -8,7 +8,7 @@ import {
 import { fetchPersons } from "./persons";
 
 async function fetchTodos(): Promise<Todo[]> {
-  const response = await fetch(`${env.VITE_TODO_API_URL}/todos`);
+  const response = await fetch(`${env.VITE_TODO_API_URL}/todos?_limit=7`);
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || "Error while trying to fetch todos");
