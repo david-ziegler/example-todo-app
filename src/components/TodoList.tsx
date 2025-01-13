@@ -15,12 +15,14 @@ import { ErrorAlert } from "./ErrorAlert";
 import { Link } from "./Link";
 import { useDialog } from "./context/useDialog";
 import { Checkbox } from "./shadcn-ui/Checkbox";
-import { useState } from "react";
 
-export function TodoList() {
+type Props = {
+  selectedTodos: Set<number>;
+  setSelectedTodos: React.Dispatch<React.SetStateAction<Set<number>>>;
+};
+
+export function TodoList({ selectedTodos, setSelectedTodos }: Props) {
   const { openEditDialog } = useDialog();
-
-  const [selectedTodos, setSelectedTodos] = useState(new Set());
 
   const {
     data: todos,
@@ -53,7 +55,7 @@ export function TodoList() {
   const setIsSelected = (id: number, value: boolean | "indeterminate") => {
     // Value will always be `true` | `false`, never "indeterminate" because we never set a checkbox to "indeterminate"
     setSelectedTodos((prev) => {
-      const updated = new Set(prev);
+      const updated = new Set<number>(prev);
       if (value) {
         updated.add(id);
       } else {
@@ -77,7 +79,8 @@ export function TodoList() {
     });
   };
 
-  const isAllSelected = selectedTodos.size === todos?.length;
+  const isAllSelected =
+    todos?.length > 1 && selectedTodos.size === todos?.length;
 
   return (
     <div>

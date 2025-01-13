@@ -8,10 +8,10 @@ import {
 import { fetchPersons } from "./persons";
 
 async function fetchTodos(): Promise<Todo[]> {
-  const response = await fetch(`${env.VITE_TODO_API_URL}/todos?_limit=7`);
+  const response = await fetch(`${env.VITE_TODO_API_URL}/todos`);
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || "Error while trying to fetch todos");
+    throw new Error("Error while trying to fetch todos:" + error.message);
   }
   return response.json();
 }
@@ -52,7 +52,7 @@ export async function createTodo(data: TodoCreate): Promise<TodoCreate> {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || "Error while trying to create a todo");
+    throw new Error("Error while trying to create a todo:" + error.message);
   }
 
   return await response.json();
@@ -69,8 +69,18 @@ export async function editTodo(data: TodoEdit): Promise<TodoCreate> {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || "Error while trying to update a todo");
+    throw new Error("Error while trying to update a todo:" + error.message);
   }
 
   return await response.json();
+}
+
+export async function deleteTodos(ids: number[]): Promise<void> {
+  await Promise.all(
+    ids.map((id) =>
+      fetch(`${env.VITE_TODO_API_URL}/todos/${id}`, {
+        method: "DELETE",
+      })
+    )
+  );
 }
