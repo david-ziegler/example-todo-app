@@ -1,7 +1,6 @@
-import { Control, Controller } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { Person } from "../../types/person";
 import { TodoCreate } from "../../types/todo";
-import { LoaderCircleIcon } from "lucide-react";
 import { FormSelect } from "./FormSelect";
 
 type Props = {

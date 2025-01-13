@@ -1,11 +1,11 @@
 import { Dialog } from "./shadcn-ui/Dialog";
 import { useForm } from "react-hook-form";
-import { createTodoSchema, TodoCreate } from "../types/todo";
+import { createEditTodoSchema, TodoCreate } from "../types/todo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./shadcn-ui/Button";
 import { Input } from "./shadcn-ui/Input";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTodo } from "../api/todos";
+import { createTodo, editTodo } from "../api/todos";
 import { FormField } from "./form/FormField";
 import { SelectResponsible } from "./form/SelectResponsible";
 import { fetchPersons } from "../api/persons";
@@ -13,18 +13,21 @@ import { Person } from "../types/person";
 import { SelectDone } from "./form/SelectDone";
 import { FormDatePicker } from "./form/FormDatePicker";
 import { useDialog } from "./context/useDialog";
+import { TodoWithResponsible } from "../types/todoWithResponsible";
+import { useState } from "react";
 
-export function CreateTodoDialog(): JSX.Element {
+export function CreateEditDialog() {
+  const queryClient = useQueryClient();
   const { dialog, closeDialog } = useDialog();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { data: persons } = useQuery<Person[]>({
     queryKey: ["persons"],
     queryFn: fetchPersons,
   });
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -35,6 +38,25 @@ export function CreateTodoDialog(): JSX.Element {
     },
   });
 
+  const editMutation = useMutation({
+    mutationFn: editTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      closeDialog();
+    },
+    onError: (error) => {
+      console.error("Error creating todo:", error);
+    },
+  });
+
+  let todo: TodoWithResponsible | undefined;
+  if (dialog?.type === "edit") {
+    const todos = queryClient.getQueryData<TodoWithResponsible[]>(["todos"]);
+    todo = todos?.find(
+      (todo: TodoWithResponsible) => todo.id === dialog.todoId
+    );
+  }
+
   const {
     register,
     handleSubmit,
@@ -42,12 +64,25 @@ export function CreateTodoDialog(): JSX.Element {
     control,
     formState: { errors },
   } = useForm<TodoCreate>({
-    resolver: zodResolver(createTodoSchema),
+    resolver: zodResolver(createEditTodoSchema),
+    defaultValues: {
+      label: todo?.label,
+      responsible: todo?.responsiblePerson.id,
+      dueDate: todo?.dueDate,
+      done: todo?.done,
+    },
   });
 
   const onSubmit = (data: TodoCreate): void => {
-    console.log("data", data);
-    mutation.mutate(data);
+    if (dialog?.type === "create") {
+      createMutation.mutate(data);
+    } else {
+      if (!todo) {
+        setErrorMessage("Zu bearbeitende Aufgabe konnte nicht geladen werden.");
+        return;
+      }
+      editMutation.mutate({ ...data, id: todo.id });
+    }
   };
 
   const handleCancelClick = () => {
@@ -72,11 +107,17 @@ export function CreateTodoDialog(): JSX.Element {
             <SelectDone control={control} />
           </FormField>
         </div>
+        {errorMessage && (
+          <p className="text-destructive pt-6">{errorMessage}</p>
+        )}
         <div className="flex flex-row justify-end space-x-2 pt-6">
           <Button variant="outline" onClick={handleCancelClick}>
             Abbrechen
           </Button>
-          <Button type="submit" disabled={mutation.isPending}>
+          <Button
+            type="submit"
+            disabled={createMutation.isPending || errorMessage.length > 0}
+          >
             Speichern
           </Button>
         </div>

@@ -8,7 +8,7 @@ export type Todo = {
   done: boolean;
 };
 
-export const createTodoSchema = z.object({
+export const createEditTodoSchema = z.object({
   label: z.string().min(1, "Bitte gib eine Beschreibung ein"),
   responsible: z.number({
     required_error: "Bitte wähle eine verantwortliche Person aus",
@@ -17,4 +17,6 @@ export const createTodoSchema = z.object({
   dueDate: z.string({ required_error: "Bitte wähle ein Fälligkeitsdatum aus" }),
 });
 
-export type TodoCreate = z.infer<typeof createTodoSchema>;
+export type TodoCreate = z.infer<typeof createEditTodoSchema>;
+
+export type TodoEdit = TodoCreate & { id: number };

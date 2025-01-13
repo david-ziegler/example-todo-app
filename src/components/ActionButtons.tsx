@@ -1,5 +1,5 @@
 import { Button } from "./shadcn-ui/Button";
-import { CreateTodoDialog } from "./CreateTodoDialog";
+import { CreateEditDialog } from "./CreateEditDialog";
 import { useDialog } from "./context/useDialog";
 
 export function ActionButtons() {
@@ -8,7 +8,7 @@ export function ActionButtons() {
   return (
     <div>
       <Button onClick={openCreateDialog}>Aufgabe hinzufügen</Button>
-      {dialog !== undefined && <CreateTodoDialog />}
+      {dialog !== undefined && <CreateEditDialog />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import env from "../helpers/env";
 import { Person } from "../types/person";
-import { Todo, TodoCreate } from "../types/todo";
+import { Todo, TodoCreate, TodoEdit } from "../types/todo";
 import {
   isTodoWithResponsible,
   TodoWithResponsible,
@@ -8,11 +8,12 @@ import {
 import { fetchPersons } from "./persons";
 
 async function fetchTodos(): Promise<Todo[]> {
-  const todosResponse = await fetch(`${env.VITE_TODO_API_URL}/todos`);
-  if (!todosResponse.ok) {
-    throw new Error("Error while trying to fetch todos");
+  const response = await fetch(`${env.VITE_TODO_API_URL}/todos`);
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error while trying to fetch todos");
   }
-  return todosResponse.json();
+  return response.json();
 }
 
 export async function fetchTodosWithResponsibles() {
@@ -50,10 +51,25 @@ export async function createTodo(data: TodoCreate): Promise<TodoCreate> {
   });
 
   if (!response.ok) {
-    const errorDetails = await response.json();
-    throw new Error(
-      errorDetails.message || "Error while trying to create a todo"
-    );
+    const error = await response.json();
+    throw new Error(error.message || "Error while trying to create a todo");
+  }
+
+  return await response.json();
+}
+
+export async function editTodo(data: TodoEdit): Promise<TodoCreate> {
+  const response = await fetch(`${env.VITE_TODO_API_URL}/todos/${data.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error while trying to update a todo");
   }
 
   return await response.json();

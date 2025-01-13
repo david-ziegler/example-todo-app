@@ -12,8 +12,12 @@ import {
 import { LoaderCircleIcon } from "lucide-react";
 import { getDoneLabel, getDueDateLabel } from "../helpers/todoLabels";
 import { ErrorAlert } from "./ErrorAlert";
+import { Link } from "./Link";
+import { useDialog } from "./context/useDialog";
 
 export function TodoList() {
+  const { openEditDialog } = useDialog();
+
   const { data, isPending, isError, error } = useQuery<TodoWithResponsible[]>({
     queryKey: ["todos"],
     queryFn: fetchTodosWithResponsibles,
@@ -46,7 +50,11 @@ export function TodoList() {
         <TableBody>
           {data.map((todo) => (
             <TableRow key={todo.id}>
-              <TableCell>{todo.label}</TableCell>
+              <TableCell>
+                <Link onClick={() => openEditDialog(todo.id)}>
+                  {todo.label}
+                </Link>
+              </TableCell>
               <TableCell>{todo.responsiblePerson.name}</TableCell>
               <TableCell>{getDueDateLabel(todo.dueDate)}</TableCell>
               <TableCell>{getDoneLabel(todo.done)}</TableCell>
