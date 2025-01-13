@@ -1,21 +1,14 @@
-import { useState } from "react";
 import { Button } from "./shadcn-ui/Button";
 import { CreateTodoDialog } from "./CreateTodoDialog";
+import { useDialog } from "./context/useDialog";
 
 export function ActionButtons() {
-  const [isCreateTodoDialogOpen, setIsCreateTodoDialogOpen] = useState(false);
+  const { dialog, openCreateDialog } = useDialog();
 
   return (
     <div>
-      <Button onClick={() => setIsCreateTodoDialogOpen(true)}>
-        Aufgabe hinzufügen
-      </Button>
-      {isCreateTodoDialogOpen && (
-        <CreateTodoDialog
-          open={isCreateTodoDialogOpen}
-          closeDialog={() => setIsCreateTodoDialogOpen(false)}
-        />
-      )}
+      <Button onClick={openCreateDialog}>Aufgabe hinzufügen</Button>
+      {dialog !== undefined && <CreateTodoDialog />}
     </div>
   );
 }

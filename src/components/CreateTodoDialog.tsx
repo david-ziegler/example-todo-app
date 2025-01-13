@@ -11,15 +11,12 @@ import { SelectResponsible } from "./form/SelectResponsible";
 import { fetchPersons } from "../api/persons";
 import { Person } from "../types/person";
 import { SelectDone } from "./form/SelectDone";
-import { DatePicker } from "./shadcn-ui/DatePicker";
 import { FormDatePicker } from "./form/FormDatePicker";
+import { useDialog } from "./context/useDialog";
 
-type Props = {
-  open: boolean;
-  closeDialog: () => void;
-};
+export function CreateTodoDialog(): JSX.Element {
+  const { dialog, closeDialog } = useDialog();
 
-export function CreateTodoDialog({ open, closeDialog }: Props): JSX.Element {
   const { data: persons } = useQuery<Person[]>({
     queryKey: ["persons"],
     queryFn: fetchPersons,
@@ -59,7 +56,7 @@ export function CreateTodoDialog({ open, closeDialog }: Props): JSX.Element {
   };
 
   return (
-    <Dialog open={open} title="Neue Aufgabe">
+    <Dialog open={dialog !== undefined} title="Neue Aufgabe">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <FormField name="label" label="Beschreibung" errors={errors}>
