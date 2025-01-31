@@ -1,10 +1,26 @@
-## APIs
+# ToDo App
 
-Um das "Backend" laufen zu lassen: `node server.js`
+## Run the frontend
 
-Es gibt zwei APIs: `http://localhost:3004/todos` und `http://localhost:3004/persons`. Die APIs geben JSON zurück und können auch im Browser aufgerufen werden.
+```
+npm install
+npm start
+```
 
-Die APIs haben die folgende Routes:
+## Run the backend
+
+Run the following command to run the backend:
+
+```
+node server.js
+```
+
+There are two APIs:
+
+- `http://localhost:3004/todos`
+- `http://localhost:3004/persons`
+
+They have the following endpoints:
 
 ```
 GET    /todos
