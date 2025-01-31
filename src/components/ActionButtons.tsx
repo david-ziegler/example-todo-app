@@ -34,16 +34,18 @@ export function ActionButtons({ selectedTodos, setSelectedTodos }: Props) {
   } löschen`;
 
   return (
-    <div className="flex space-x-4">
-      <Button
-        onClick={deleteSelectedTodos}
-        variant="outline"
-        disabled={selectedTodos.size === 0}
-      >
-        {deleteButtonLabel}
-      </Button>
-      <Button onClick={openCreateDialog}>Aufgabe hinzufügen</Button>
+    <>
+      <div className="flex space-x-4">
+        <Button
+          onClick={deleteSelectedTodos}
+          variant="outline"
+          disabled={selectedTodos.size === 0}
+        >
+          {deleteButtonLabel}
+        </Button>
+        <Button onClick={openCreateDialog}>Aufgabe hinzufügen</Button>
+      </div>
       {dialog !== undefined && <CreateEditDialog />}
-    </div>
+    </>
   );
 }
