@@ -7,5 +7,8 @@ export default defineConfig(() => {
       outDir: "build",
     },
     plugins: [react()],
+    optimizeDeps: {
+      exclude: ["chunk-D3Q5544B.js"],
+    },
   };
 });
