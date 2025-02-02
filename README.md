@@ -39,3 +39,13 @@ PUT    /persons/1
 PATCH  /persons/1
 DELETE /persons/1
 ```
+
+## Don't track changes to `db.json`
+
+If you don't want git to track changes to the `db.json` file, run the following command:
+
+```
+git update-index --assume-unchanged db.json
+```
+
+We didn't add it to gitignore because an initial `db.json` file with some initial data (e.g. persons) is required for the app to work.

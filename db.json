@@ -1,0 +1,101 @@
+{
+  "todos": [
+    {
+      "label": "Bob anrufen",
+      "responsible": 2,
+      "done": false,
+      "dueDate": "02.02.2025",
+      "id": 1
+    },
+    {
+      "label": "Ticket überprüfen",
+      "responsible": 3,
+      "done": true,
+      "dueDate": "04.02.2025",
+      "id": 2
+    },
+    {
+      "label": "Meeting vorbereiten",
+      "responsible": 1,
+      "done": false,
+      "dueDate": "05.02.2025",
+      "id": 3
+    },
+    {
+      "label": "Präsentation aktualisieren",
+      "responsible": 4,
+      "done": false,
+      "dueDate": "08.02.2025",
+      "id": 4
+    },
+    {
+      "label": "Budgetplanung abschließen",
+      "responsible": 5,
+      "done": true,
+      "dueDate": "12.02.2025",
+      "id": 5
+    },
+    {
+      "label": "Entwurf für Kundenbericht erstellen",
+      "responsible": 2,
+      "done": false,
+      "dueDate": "14.02.2025",
+      "id": 6
+    },
+    {
+      "label": "Feedback zu Design-Entwurf geben",
+      "responsible": 3,
+      "done": false,
+      "dueDate": "16.02.2025",
+      "id": 7
+    },
+    {
+      "label": "Software-Update testen",
+      "responsible": 1,
+      "done": true,
+      "dueDate": "20.02.2025",
+      "id": 8
+    },
+    {
+      "label": "Peter anrufen",
+      "responsible": 4,
+      "done": false,
+      "dueDate": "22.02.2025",
+      "id": 9
+    },
+    {
+      "label": "Retro vorbereiten",
+      "responsible": 5,
+      "done": false,
+      "dueDate": "25.02.2025",
+      "id": 10
+    }
+  ],
+  "persons": [
+    {
+      "id": 1,
+      "name": "Orelie Ledbury",
+      "email": "oledbury0@dot.gov"
+    },
+    {
+      "id": 2,
+      "name": "Darelle Kiely",
+      "email": "dkiely1@tinyurl.com"
+    },
+    {
+      "id": 3,
+      "name": "Alice Marston",
+      "email": "amarston2@mail.com"
+    },
+    {
+      "id": 4,
+      "name": "Bob Watterson",
+      "email": "bwatterson3@company.com"
+    },
+    {
+      "id": 5,
+      "name": "Charlie Remington",
+      "email": "cremington4@work.org"
+    }
+  ]
+}
